@@ -214,29 +214,6 @@ Inspired by
 
 ---
 
-# ⚙ Installation
-
-```bash
-git clone https://github.com/benazirzoya/Dent--Next-Gen-dental-studio.git
-
-cd Dent--Next-Gen-dental-studio
-
-npm install
-
-npm run dev
-```
-
----
-
-# Production Build
-
-```bash
-npm run build
-
-npm start
-```
-
----
 
 # 📈 Lighthouse Goals
 
@@ -247,25 +224,6 @@ npm start
 
 ---
 
-# 📸 Screenshots Folder
-
-Create
-
-```
-public/screenshots/
-
-hero.jpg
-home.jpg
-features.jpg
-treatment.jpg
-doctors.jpg
-contact.jpg
-login.jpg
-```
-
-These images automatically render inside this README.
-
----
 
 # 🤝 Contributing
 
