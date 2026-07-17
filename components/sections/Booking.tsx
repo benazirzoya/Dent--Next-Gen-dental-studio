@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Sparkles, Calendar, ArrowRight, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
+import { Sparkles, Calendar, ArrowRight, CheckCircle, AlertCircle, Loader2, Check } from "lucide-react";
 
 export default function Booking() {
   const [formSubmitted, setFormSubmitted] = useState(false);
@@ -17,6 +17,12 @@ export default function Booking() {
     message: "",
   });
 
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const isNameValid = formData.name.trim().length >= 3;
+  const isEmailValid = emailPattern.test(formData.email);
+  const isPhoneValid = formData.phone.trim().length >= 8;
+  const isDateValid = formData.date !== "";
+
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
@@ -26,8 +32,8 @@ export default function Booking() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.phone || !formData.date) {
-      setErrorMsg("Please fill out all required fields.");
+    if (!isNameValid || !isEmailValid || !isPhoneValid || !isDateValid) {
+      setErrorMsg("Please fill out all required fields with valid details.");
       return;
     }
 
@@ -126,55 +132,70 @@ export default function Booking() {
               </div>
             </div>
 
-            {/* Input Name */}
+            {/* Input Name with real-time verification */}
             <div className="flex flex-col gap-1.5">
               <label className="text-[10px] font-bold uppercase tracking-wider text-white">
                 Patient Name
               </label>
-              <input
-                type="text"
-                name="name"
-                required
-                value={formData.name}
-                onChange={handleInputChange}
-                placeholder="E.g. Olivia Vance"
-                className="w-full px-4 py-3 text-sm font-semibold rounded-xl bg-white/10 border border-white/30 focus:bg-white/20 focus:border-luxury-gold focus:outline-none transition-all duration-300 text-white placeholder:text-white/60"
-              />
+              <div className="relative">
+                <input
+                  type="text"
+                  name="name"
+                  required
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  placeholder="E.g. Olivia Vance"
+                  className="w-full pl-4 pr-10 py-3 text-sm font-semibold rounded-xl bg-white/10 border border-white/30 focus:bg-white/20 focus:border-luxury-gold focus:outline-none transition-all duration-300 text-white placeholder:text-white/60"
+                />
+                {isNameValid && (
+                  <Check className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#25D366] animate-fade-in" />
+                )}
+              </div>
             </div>
 
-            {/* Input Email & Phone (Grid) */}
+            {/* Input Email & Phone (Grid) with real-time verification */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="flex flex-col gap-1.5">
                 <label className="text-[10px] font-bold uppercase tracking-wider text-white">
                   Email Address
                 </label>
-                <input
-                  type="email"
-                  name="email"
-                  required
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  placeholder="olivia@domain.com"
-                  className="w-full px-4 py-3 text-sm font-semibold rounded-xl bg-white/10 border border-white/30 focus:bg-white/20 focus:border-luxury-gold focus:outline-none transition-all duration-300 text-white placeholder:text-white/60"
-                />
+                <div className="relative">
+                  <input
+                    type="email"
+                    name="email"
+                    required
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    placeholder="olivia@domain.com"
+                    className="w-full pl-4 pr-10 py-3 text-sm font-semibold rounded-xl bg-white/10 border border-white/30 focus:bg-white/20 focus:border-luxury-gold focus:outline-none transition-all duration-300 text-white placeholder:text-white/60"
+                  />
+                  {isEmailValid && (
+                    <Check className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#25D366] animate-fade-in" />
+                  )}
+                </div>
               </div>
               <div className="flex flex-col gap-1.5">
                 <label className="text-[10px] font-bold uppercase tracking-wider text-white">
                   Phone Number
                 </label>
-                <input
-                  type="tel"
-                  name="phone"
-                  required
-                  value={formData.phone}
-                  onChange={handleInputChange}
-                  placeholder="+1 (555) 909-3368"
-                  className="w-full px-4 py-3 text-sm font-semibold rounded-xl bg-white/10 border border-white/30 focus:bg-white/20 focus:border-luxury-gold focus:outline-none transition-all duration-300 text-white placeholder:text-white/60"
-                />
+                <div className="relative">
+                  <input
+                    type="tel"
+                    name="phone"
+                    required
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    placeholder="+1 (555) 909-3368"
+                    className="w-full pl-4 pr-10 py-3 text-sm font-semibold rounded-xl bg-white/10 border border-white/30 focus:bg-white/20 focus:border-luxury-gold focus:outline-none transition-all duration-300 text-white placeholder:text-white/60"
+                  />
+                  {isPhoneValid && (
+                    <Check className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#25D366] animate-fade-in" />
+                  )}
+                </div>
               </div>
             </div>
 
-            {/* Input Date & Time (Grid) */}
+            {/* Input Date & Time (Grid) with verification */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="flex flex-col gap-1.5">
                 <label className="text-[10px] font-bold uppercase tracking-wider text-white">
@@ -187,9 +208,12 @@ export default function Booking() {
                     required
                     value={formData.date}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 text-sm font-semibold rounded-xl bg-white/10 border border-white/30 focus:bg-white/20 focus:border-luxury-gold focus:outline-none transition-all duration-300 text-white"
+                    className="w-full pl-4 pr-12 py-3 text-sm font-semibold rounded-xl bg-white/10 border border-white/30 focus:bg-white/20 focus:border-luxury-gold focus:outline-none transition-all duration-300 text-white"
                   />
-                  <Calendar className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white pointer-events-none" />
+                  <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-1 text-white pointer-events-none">
+                    {isDateValid && <Check className="w-4 h-4 text-[#25D366] mr-1" />}
+                    <Calendar className="w-4 h-4" />
+                  </div>
                 </div>
               </div>
               <div className="flex flex-col gap-1.5">
@@ -210,7 +234,7 @@ export default function Booking() {
               </div>
             </div>
 
-            {/* Special Instructions (Optional notes) */}
+            {/* Special Instructions */}
             <div className="flex flex-col gap-1.5">
               <label className="text-[10px] font-bold uppercase tracking-wider text-white">
                 Special Inquiries / Symptoms (Optional)

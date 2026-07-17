@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { ArrowRight, Lock, Mail, User, CheckCircle, AlertCircle, Loader2, Calendar, Clock, LogOut, FileText, Eye, EyeOff } from "lucide-react";
+import { ArrowRight, Lock, Mail, User, CheckCircle, AlertCircle, Loader2, Calendar, Clock, LogOut, FileText, Eye, EyeOff, Check } from "lucide-react";
 
 interface BookingItem {
   _id: string;
@@ -36,6 +36,11 @@ export default function LoginPage() {
   // Dashboard states
   const [bookings, setBookings] = useState<BookingItem[]>([]);
   const [loadingBookings, setLoadingBookings] = useState(false);
+
+  // Field validation variables
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const isNameValid = formData.name.trim().length >= 3;
+  const isEmailValid = emailPattern.test(formData.email);
 
   // Sync profile state with localStorage on mount
   useEffect(() => {
@@ -85,8 +90,7 @@ export default function LoginPage() {
     setErrorMsg("");
     setLoading(true);
 
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(formData.email)) {
+    if (!isEmailValid) {
       setErrorMsg("Please provide a valid email address.");
       setLoading(false);
       return;
@@ -335,9 +339,12 @@ export default function LoginPage() {
                       value={formData.name}
                       onChange={handleInputChange}
                       placeholder="Olivia Vance"
-                      className="w-full pl-10 pr-4 py-3 text-sm font-semibold rounded-xl bg-white/10 border border-white/30 focus:bg-white/20 focus:border-luxury-gold focus:outline-none transition-all duration-300 text-white placeholder:text-white/60"
+                      className="w-full pl-10 pr-10 py-3 text-sm font-semibold rounded-xl bg-white/10 border border-white/30 focus:bg-white/20 focus:border-luxury-gold focus:outline-none transition-all duration-300 text-white placeholder:text-white/60"
                     />
                     <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60 pointer-events-none" />
+                    {isNameValid && (
+                      <Check className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#25D366] animate-fade-in" />
+                    )}
                   </div>
                 </div>
               )}
@@ -355,9 +362,12 @@ export default function LoginPage() {
                     value={formData.email}
                     onChange={handleInputChange}
                     placeholder="olivia@domain.com"
-                    className="w-full pl-10 pr-4 py-3 text-sm font-semibold rounded-xl bg-white/10 border border-white/30 focus:bg-white/20 focus:border-luxury-gold focus:outline-none transition-all duration-300 text-white placeholder:text-white/60"
+                    className="w-full pl-10 pr-10 py-3 text-sm font-semibold rounded-xl bg-white/10 border border-white/30 focus:bg-white/20 focus:border-luxury-gold focus:outline-none transition-all duration-300 text-white placeholder:text-white/60"
                   />
                   <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60 pointer-events-none" />
+                  {isEmailValid && (
+                    <Check className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#25D366] animate-fade-in" />
+                  )}
                 </div>
               </div>
 
